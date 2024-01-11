@@ -1,0 +1,83 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+struct Book 
+{
+    string title;
+    string author;
+    int publicationYear;
+    string genre;
+};
+
+void inputDetails(Book books[6]) {
+    for (int i = 0; i < 6; ++i) {
+        cout << "Enter book title:";
+        cin.ignore();
+        getline(cin, books[i].title);
+        cout << "Enter author name:";
+        getline(cin, books[i].author);
+        cout << "Enter publication year:";
+        cin >> books[i].publicationYear;
+        cout << "Enter genre:";
+        cin >> books[i].genre;
+
+        cout << "-------------------------";
+        cout << endl;
+    }
+}
+
+void categorizeBooks(const Book books[6], Book fiction[], Book nonfiction[], int& fictionCount, int& nonfictionCount) {
+    fictionCount = nonfictionCount = 0;
+
+    for (int i = 0; i < 6; ++i) {
+        if (books[i].genre == "fiction") {
+            fiction[fictionCount++] = books[i];
+        }
+        else {
+            nonfiction[nonfictionCount++] = books[i];
+            
+        }
+    }
+    
+}
+
+void findEarliestBooks(const Book books[], int count, Book& earliestBook) {
+    earliestBook = books[0];
+    for (int i = 1; i < count; ++i) {
+        if (books[i].publicationYear < earliestBook.publicationYear) {
+            earliestBook = books[i];
+        }
+    }
+}
+void displayDetails(const Book fiction[], int fictionCount, const Book nonfiction[], int nonfictionCount,
+    const Book& earliestFiction, const Book& earliestnonfiction) {
+    cout << "fiction Books:" << endl;
+    for (int i = 0; i < fictionCount; ++i) {
+        cout << "Title: " << fiction[i].title << "\nauthor: " << fiction[i].author << "\npublication Year: "
+            << fiction[i].publicationYear << "\n genre: " << fiction[i].genre << endl;
+    }
+    cout << "Earliest fiction Book: " << earliestFiction.title << " by " << earliestFiction.author << endl;
+
+    cout << "\Non-Fiction Books:" << endl;
+    for (int i = 0; i < nonfictionCount; ++i) {
+        cout << "Title: " << nonfiction[i].title << "\nauthor: " << nonfiction[i].author << "\npublication Year: "
+            << nonfiction[i].publicationYear << "\ngenre:" << nonfiction[i].genre << endl;
+    }
+    cout << "Earliest non-fiction Book: " << earliestnonfiction.title << " by " << earliestnonfiction.author << endl;
+}
+
+int main() {
+    Book books[6];
+    Book fiction[6], nonfiction[6];
+    int fictionCount, nonfictionCount;
+    Book earliestfiction, earliestnonfiction;
+
+    inputDetails(books);
+    categorizeBooks(books, fiction, nonfiction, fictionCount, nonfictionCount);
+    findEarliestBooks(fiction, fictionCount, earliestfiction);
+    findEarliestBooks(nonfiction, nonfictionCount, earliestnonfiction);
+    displayDetails(fiction, fictionCount, nonfiction, nonfictionCount, earliestfiction, earliestnonfiction);
+
+    return 0;
+}
